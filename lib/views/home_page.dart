@@ -228,7 +228,7 @@ class _HomePageState extends State<HomePage> {
             Center(
               child: Container(
                 color: Colors.grey[100],
-                height: 900,
+                height: 600,
                 width: 600,
                 child: StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
@@ -253,28 +253,33 @@ class _HomePageState extends State<HomePage> {
                                   hoverindex = null;
                                 });
                               },
-                              child: Column(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.black,
-                                        image: DecorationImage(
-                                          image: NetworkImage(snapshot
-                                              .data!.docs[index]['url']),
-                                          fit: BoxFit.cover,
-                                        )),
-                                    height: 100,
-                                    width: 100,
-                                  ),
-                                  CText(
-                                    text: snapshot.data!.docs[index]['name']
-                                        .toString()
-                                        .toUpperCase(),
-                                    size: hoverindex == index ? 15 : 10,
-                                    color: Colors.black,
-                                    weight: FontWeight.normal,
-                                  ),
-                                ],
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.black)),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.black,
+                                          image: DecorationImage(
+                                            image: NetworkImage(snapshot
+                                                .data!.docs[index]['url']),
+                                            fit: BoxFit.cover,
+                                          )),
+                                      height: 120,
+                                      width: 120,
+                                    ),
+                                    CText(
+                                      text: snapshot.data!.docs[index]['name']
+                                          .toString()
+                                          .toUpperCase(),
+                                      size: hoverindex == index ? 15 : 12,
+                                      color: Colors.black,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ));
                       },
@@ -285,6 +290,245 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
               ),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            const Center(child: CText(text: "PRODUCT FEATURES", size: 20)),
+            const SizedBox(
+              height: 40,
+            ),
+            SizedBox(
+              height: 700,
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection("products")
+                    .limit(8)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  return GridView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: MouseRegion(
+                          onEnter: (event) {
+                            setState(() {
+                              hoverindex = index;
+                            });
+                          },
+                          onExit: (event) {
+                            setState(() {
+                              hoverindex = null;
+                            });
+                          },
+                          // onHover: (event) => print(event),
+                          child: Container(
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CText(
+                                    text: snapshot.data!.docs[index]['name']
+                                        .toString()
+                                        .toUpperCase(),
+                                    size: hoverindex == index ? 30 : 22,
+                                    color: Colors.white,
+                                    weight: FontWeight.normal,
+                                  ),
+                                  const SizedBox(
+                                    height: 30,
+                                  ),
+                                  hoverindex == index
+                                      ? Container(
+                                          child: const Center(
+                                            child: CText(
+                                                text: "Explore",
+                                                size: 20,
+                                                color: Colors.white),
+                                          ),
+                                          height: 40,
+                                          width: 120,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.white)),
+                                        )
+                                      : const SizedBox()
+                                ],
+                              ),
+                            ),
+                            decoration: BoxDecoration(
+                                color: Colors.black,
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        snapshot.data!.docs[index]['url']),
+                                    fit: BoxFit.cover,
+                                    colorFilter: ColorFilter.mode(
+                                        hovercolor, BlendMode.dstATop))),
+                            height: 100,
+                            width: 100,
+                          ),
+                        ),
+                      );
+                    },
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4),
+                  );
+                },
+              ),
+            ),
+            Container(
+              height: 200,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.grey[200],
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    const CText(text: "Request a Call Back from us", size: 20),
+                    Container(
+                      height: 50,
+                      color: Colors.white,
+                      width: 400,
+                    )
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            const Center(child: CText(text: "ABOUT US", size: 20)),
+            const SizedBox(
+              height: 40,
+            ),
+            Center(
+              child: CircleAvatar(
+                radius: 100,
+                backgroundColor: Colors.blue[100],
+              ),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            const Center(
+                child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 300),
+              child: CText(
+                text:
+                    "Over the years, Mr and Mrs Design Wood Works has worked with leading five-star hotels, multinational organization as well as financial institutions and banks. We are constantly developing new products and working to provide innovative furniture solutions.",
+                size: 13,
+                weight: FontWeight.normal,
+              ),
+            )),
+            const SizedBox(
+              height: 40,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  children: const [
+                    CText(text: "Products", size: 15),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CText(
+                      text: "Products",
+                      size: 15,
+                      weight: FontWeight.normal,
+                    ),
+                    CText(
+                      text: "Products",
+                      size: 15,
+                      weight: FontWeight.normal,
+                    ),
+                    CText(
+                      text: "Products",
+                      size: 15,
+                      weight: FontWeight.normal,
+                    ),
+                    CText(
+                      text: "Products",
+                      size: 15,
+                      weight: FontWeight.normal,
+                    ),
+                    CText(
+                      text: "Products",
+                      size: 15,
+                      weight: FontWeight.normal,
+                    ),
+                  ],
+                ),
+                Column(
+                  children: const [
+                    CText(text: "Products", size: 15),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CText(
+                      text: "Products",
+                      size: 15,
+                      weight: FontWeight.normal,
+                    ),
+                    CText(
+                      text: "Products",
+                      size: 15,
+                      weight: FontWeight.normal,
+                    ),
+                    CText(
+                      text: "Products",
+                      size: 15,
+                      weight: FontWeight.normal,
+                    ),
+                    CText(
+                      text: "Products",
+                      size: 15,
+                      weight: FontWeight.normal,
+                    ),
+                    CText(
+                      text: "Products",
+                      size: 15,
+                      weight: FontWeight.normal,
+                    ),
+                  ],
+                ),
+                Column(
+                  children: const [
+                    CText(text: "Products", size: 15),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CText(
+                      text: "Products",
+                      size: 15,
+                      weight: FontWeight.normal,
+                    ),
+                    CText(
+                      text: "Products",
+                      size: 15,
+                      weight: FontWeight.normal,
+                    ),
+                    CText(
+                      text: "Products",
+                      size: 15,
+                      weight: FontWeight.normal,
+                    ),
+                    CText(
+                      text: "Products",
+                      size: 15,
+                      weight: FontWeight.normal,
+                    ),
+                    CText(
+                      text: "Products",
+                      size: 15,
+                      weight: FontWeight.normal,
+                    ),
+                  ],
+                ),
+              ],
             ),
           ],
         ),

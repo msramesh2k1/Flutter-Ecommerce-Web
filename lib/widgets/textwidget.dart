@@ -20,6 +20,7 @@ class CText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
+      textAlign: TextAlign.center,
       style: GoogleFonts.ubuntu(
           color: color ?? Colors.black,
           fontWeight: weight ?? FontWeight.bold,
